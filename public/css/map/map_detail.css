@@ -1,0 +1,10 @@
+.map_detail {
+  margin: 30px;
+}
+.map_detail .file_list {
+  margin: 30px;
+}
+.map_detail .file_list .file {
+  display: inline-block;
+  margin: 30px;
+}

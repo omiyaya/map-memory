@@ -1,0 +1,57 @@
+@import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300);
+@charset "UTF-8";
+body {
+  height: 100%;
+  font-family: "Source Sans Pro", sans-serif;
+  background: linear-gradient(to right, #36d1dc, #5b86e5);
+  width: 100%;
+  margin: 0px;
+}
+body header {
+  width: 100%;
+  height: 70px;
+  background-color: white;
+  font-size: 24px;
+  box-shadow: 0px 5px 4px #666666;
+}
+body header .menu {
+  display: flex;
+  padding: 10px;
+}
+body header .menu .logout {
+  width: 100px;
+  margin-left: auto;
+}
+body header .menu .logout .button {
+  display: inline-block;
+  border-radius: 5%;
+  /* 角丸       */
+  font-size: 11pt;
+  /* 文字サイズ */
+  text-align: center;
+  /* 文字位置   */
+  cursor: pointer;
+  /* カーソル   */
+  padding: 5px 15px;
+  /* 余白       */
+  background: #999999;
+  /* 背景色     */
+  color: #ffffff;
+  /* 文字色     */
+  line-height: 1em;
+  /* 1行の高さ  */
+  transition: 0.3s;
+  /* なめらか変化 */
+  box-shadow: 5px 5px 4px #666666;
+  /* 影の設定 */
+  border: 2px solid #999999;
+  /* 枠の指定 */
+}
+body header .menu .logout .button:hover {
+  box-shadow: none;
+  /* カーソル時の影消去 */
+  color: #999999;
+  /* 背景色     */
+  background: #ffffff;
+  /* 文字色     */
+}

@@ -1,0 +1,29 @@
+@import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300);
+@import 'mixin';
+@import 'header';
+@import 'sidemenu';
+@import 'content';
+@import 'tooltip';
+
+html {
+    height: 100%;
+}
+
+body {
+    height: 100%;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 18px;
+    background: #fafafa;
+    width: 100%;
+    margin: 0px;
+
+    a {
+        text-decoration:none; 
+    }
+
+    .main {
+        min-height: calc(100vh - 70px);
+        display: flex;
+    }
+
+}
