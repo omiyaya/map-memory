@@ -21,5 +21,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
  
 Route::get('/commentRegist/', [MapDetailController::class, 'commentRegist']);
 Route::post('/commentRegist/', [MapDetailController::class, 'commentRegist']);
-Route::get('/getMapFiles/{mapId}/', [MapDetailController::class, 'getMapFiles']);
-Route::post('/getMapFiles/{mapId}/', [MapDetailController::class, 'getMapFiles']);
+Route::get('/getMapPhoto/{areaId}/', [MapDetailController::class, 'getMapPhoto']);
+Route::post('/getMapPhoto/{areaId}/', [MapDetailController::class, 'getMapPhoto']);

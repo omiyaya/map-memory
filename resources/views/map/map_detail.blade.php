@@ -6,9 +6,9 @@
 
 @section('content')
     <div class="map_detail">
-        <form action="/map/map_detail/{{ $post['map_info']['map_id'] }}/regist" method="post" enctype="multipart/form-data">
+        <form action="/map/map_detail/{{ $post['map_info']['area_id'] }}/regist" method="post" enctype="multipart/form-data">
             <map-detail-component :post='{{ $jsonPost }}'></map-detail-component>
-            <input type="hidden" name="map_id" id="map_id" value="">
+            <input type="hidden" name="area_id" id="area_id" value="">
             @csrf
         </form>
     </div>

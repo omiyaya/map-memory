@@ -5468,13 +5468,13 @@ __webpack_require__.r(__webpack_exports__);
       detailUrl: '/map/map_detail/',
       mapName: '',
       mapFiles: [],
-      mapId: ''
+      areaId: ''
     };
   },
   methods: {
     show: function show(map) {
       var file = '/images/test.png';
-      this.mapId = map.map_id;
+      this.areaId = map.area_id;
       this.mapName = map.name;
       this.mapFiles = [file, file];
       console.log(this.mapFiles);
@@ -5547,55 +5547,55 @@ __webpack_require__.r(__webpack_exports__);
     return {
       imageDirectory: '/storage/',
       mapInfo: this.post.map_info,
-      mapId: this.post.map_info.map_id,
-      mapFiles: [],
+      areaId: this.post.map_info.area_id,
+      mapPhotos: [],
       commentFile: [],
-      fileName: '',
-      fileSeq: '',
+      photoName: '',
+      photoId: '',
       commentList: [],
       commentValue: ''
     };
   },
   methods: {
-    showComment: function showComment(mapFile) {
-      this.commentFile = mapFile;
-      this.fileName = mapFile[3];
-      this.fileSeq = mapFile[0];
+    showComment: function showComment(mapPhoto) {
+      this.commentFile = mapPhoto;
+      this.photoName = mapPhoto.photo_name;
+      this.photoId = mapPhoto.photo_id;
       this.commentList = ['コメント１', 'まじまんじ', 'うちら最強☆', 'おれら魔法使い（童貞）'];
       this.$modal.show('commnet-modal');
     },
     hideComment: function hideComment() {
       this.commentFile = [];
       this.commentValue = '';
-      this.fileSeq = '';
+      this.photoId = '';
       this.$modal.hide('commnet-modal');
     },
-    getMapFiles: function getMapFiles() {
-      var url = '/api/getMapFiles/' + this.mapId;
+    getMapPhoto: function getMapPhoto() {
+      var url = '/api/getMapPhoto/' + this.areaId;
       console.log(url);
       var $this = this;
       axios.get(url).then(function (res) {
         //vueにバインドされている値を書き換えると表示に反映される
         app.result = res.data;
-        $this.mapFiles = res.data;
+        $this.mapPhotos = res.data;
         /*
         var i = 0
         for (i; i<res.data.length; i++) {
-        $this.mapFiles.push(Object.values(res.data[i]))
+        $this.mapPhotos.push(Object.values(res.data[i]))
         }*/
       })["catch"](function (res) {
         //vueにバインドされている値を書き換えると表示に反映される
         app.result = res.data;
         console.log(res);
       });
-      this.mapFiles.splice();
+      this.mapPhotos.splice();
     },
     commentRegist: function commentRegist() {
       var $this = this;
-      axios.post('/api/commentRegist', [this.mapId, this.fileSeq, this.commentValue]).then(function (res) {
+      axios.post('/api/commentRegist', [this.areaId, this.photoId, this.commentValue]).then(function (res) {
         //vueにバインドされている値を書き換えると表示に反映される
         app.result = res.data;
-        $this.getMapFiles();
+        $this.getMapPhoto();
       })["catch"](function (res) {
         //vueにバインドされている値を書き換えると表示に反映される
         app.result = res.data;
@@ -5607,10 +5607,10 @@ __webpack_require__.r(__webpack_exports__);
     /*
     var i = 0
     for (i; i< this.post.files.length; i++) {
-        $this.mapFiles.push(Object.values(this.post.files[i]))
+        $this.mapPhotos.push(Object.values(this.post.files[i]))
     }
     */
-    this.getMapFiles();
+    this.getMapPhoto();
   },
   mounted: function mounted() {}
 });
@@ -37877,7 +37877,7 @@ var render = function () {
                 "a",
                 {
                   attrs: {
-                    href: "/map/map_detail/" + _vm.mapId,
+                    href: "/map/map_detail/" + _vm.areaId,
                     hclass: "button",
                   },
                 },
@@ -37925,8 +37925,8 @@ var render = function () {
       _c("input", {
         attrs: {
           type: "file",
-          name: "memory_files[]",
-          id: "memory_files",
+          name: "memory_photo[]",
+          id: "memory_photo",
           multiple: "",
         },
       }),
@@ -37949,19 +37949,19 @@ var render = function () {
         "div",
         { staticClass: "file_list" },
         [
-          _vm._l(_vm.mapFiles, function (mapFile, key) {
+          _vm._l(_vm.mapPhotos, function (mapPhoto, key) {
             return _c("div", { key: key, staticClass: "file" }, [
               _c("img", {
                 directives: [
                   {
                     name: "tooltip",
                     rawName: "v-tooltip",
-                    value: "ファイル名：" + mapFile[3],
-                    expression: "'ファイル名：' + mapFile[3]",
+                    value: "ファイル名：" + mapPhoto.photo_name,
+                    expression: "'ファイル名：' + mapPhoto.photo_name",
                   },
                 ],
                 attrs: {
-                  src: _vm.imageDirectory + mapFile[4],
+                  src: _vm.imageDirectory + mapPhoto.photo_hash_name,
                   width: "200",
                   height: "200",
                 },
@@ -37969,18 +37969,18 @@ var render = function () {
                   click: function ($event) {
                     $event.preventDefault()
                     $event.stopPropagation()
-                    return _vm.showComment(mapFile)
+                    return _vm.showComment(mapPhoto)
                   },
                 },
               }),
               _vm._v(" "),
-              _c("div", [_vm._v(_vm._s(mapFile[3]))]),
+              _c("div", [_vm._v(_vm._s(mapPhoto.photo_name))]),
             ])
           }),
           _vm._v(" "),
           _c("modal", { attrs: { name: "commnet-modal" } }, [
             _c("div", { staticClass: "modal-header" }, [
-              _c("h2", [_vm._v(_vm._s(_vm.fileName))]),
+              _c("h2", [_vm._v(_vm._s(_vm.photoName))]),
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "modal-body" }, [

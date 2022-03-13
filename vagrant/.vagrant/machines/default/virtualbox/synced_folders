@@ -1,0 +1,1 @@
+{"virtualbox":{"/var/www/map_memory":{"guestpath":"/var/www/map_memory","hostpath":"C:/project/MapMemory/map_memory","disabled":false,"__vagrantfile":true},"/vagrant":{"guestpath":"/vagrant","hostpath":"C:/project/MapMemory/vagrant","disabled":false,"__vagrantfile":true}}}

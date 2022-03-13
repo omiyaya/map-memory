@@ -26,9 +26,9 @@ Route::post('/logout', [LoginController::class, 'logout']);
 
 Route::prefix('/map')->group(function () {
     Route::get('/map', [MapController::class, 'index']);
-    Route::get('/map_detail/{mapId}/regist', [MapDetailController::class, 'regist']);
-    Route::post('/map_detail/{mapId}/regist', [MapDetailController::class, 'regist']);
-    Route::get('/map_detail/{mapId}', [MapDetailController::class, 'index']);
+    Route::get('/map_detail/{areaId}/regist', [MapDetailController::class, 'regist']);
+    Route::post('/map_detail/{areaId}/regist', [MapDetailController::class, 'regist']);
+    Route::get('/map_detail/{areaId}', [MapDetailController::class, 'index']);
 });
 
 Route::get('/phpinfo', function () {

@@ -14,7 +14,14 @@ return new class extends Migration
     public function up()
     {
         Schema::create('t_photo', function (Blueprint $table) {
-            $table->id();
+            $table->increments('photo_id');
+            $table->string('photo_name')->nullable();
+            $table->string('photo_hash_name')->nullable();
+            $table->string('photo_extension')->nullable();
+            $table->date('photo_date')->nullable();
+            $table->boolean('share_on')->default(false);
+            $table->integer('user_id');
+            $table->integer('area_id');
             $table->timestamps();
         });
     }

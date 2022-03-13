@@ -1,24 +1,24 @@
 <template>
     <div class="container">
         <h1 class="map_name">{{ mapInfo.name }}</h1>
-        <input type="file" name="memory_files[]" id="memory_files" multiple>
+        <input type="file" name="memory_photo[]" id="memory_photo" multiple>
             <input v-for ="(value,key) in mapInfo   " :key=key type="hidden" :name="'map_info[' + key  + ']'" :value="value" multiple="multiple">
         <input type="submit" value="登録">
 
         <div class="file_list">
-            <div v-for="(mapFile, key) in mapFiles" :key=key class="file" >
+            <div v-for="(mapPhoto, key) in mapPhotos" :key=key class="file" >
                 <img  
-                    :src="imageDirectory + mapFile[4]" 
+                    :src="imageDirectory + mapPhoto.photo_hash_name" 
                     width="200" 
                     height="200" 
-                    @click.prevent.stop="showComment(mapFile)"
-                     v-tooltip="'ファイル名：' + mapFile[3]"
+                    @click.prevent.stop="showComment(mapPhoto)"
+                     v-tooltip="'ファイル名：' + mapPhoto.photo_name"
                 >
-                <div>{{ mapFile[3] }}</div>
+                <div>{{ mapPhoto.photo_name }}</div>
             </div>
             <modal name="commnet-modal">
                 <div class="modal-header">
-                    <h2>{{ fileName }}</h2>
+                    <h2>{{ photoName }}</h2>
                 </div>
                 <div class="modal-body">
                     <div>
@@ -44,41 +44,41 @@
             return {
                 imageDirectory: '/storage/',
                 mapInfo: this.post.map_info,
-                mapId: this.post.map_info.map_id,
-                mapFiles: [],
+                areaId: this.post.map_info.area_id,
+                mapPhotos: [],
                 commentFile: [],
-                fileName: '',
-                fileSeq: '',
+                photoName: '',
+                photoId: '',
                 commentList: [],
                 commentValue: '',
             };
         },
         methods: {
-            showComment : function(mapFile) {
-                this.commentFile = mapFile
-                this.fileName = mapFile[3]
-                this.fileSeq = mapFile[0]
+            showComment : function(mapPhoto) {
+                this.commentFile = mapPhoto
+                this.photoName = mapPhoto.photo_name
+                this.photoId = mapPhoto.photo_id
                 this.commentList = ['コメント１','まじまんじ','うちら最強☆','おれら魔法使い（童貞）']
                 this.$modal.show('commnet-modal')
             },
             hideComment : function () {
                 this.commentFile = []
                 this.commentValue = ''
-                this.fileSeq = ''
+                this.photoId = ''
                 this.$modal.hide('commnet-modal')
             },
-            getMapFiles() {
-                var url = '/api/getMapFiles/' + this.mapId
+            getMapPhoto() {
+                var url = '/api/getMapPhoto/' + this.areaId
                 console.log(url)
                 let $this = this
                 axios.get(url)
                     .then(function(res){
                         //vueにバインドされている値を書き換えると表示に反映される
                         app.result = res.data
-                        $this.mapFiles = res.data/*
+                        $this.mapPhotos = res.data/*
                         var i = 0
                         for (i; i<res.data.length; i++) {
-                            $this.mapFiles.push(Object.values(res.data[i]))
+                            $this.mapPhotos.push(Object.values(res.data[i]))
                         }*/
                     })
                     .catch(function(res){
@@ -86,15 +86,15 @@
                         app.result = res.data
                         console.log(res)
                     })
-                this.mapFiles.splice()
+                this.mapPhotos.splice()
             },
             commentRegist: function () {
                 let $this = this
-                axios.post('/api/commentRegist',[this.mapId, this.fileSeq,this.commentValue])
+                axios.post('/api/commentRegist',[this.areaId, this.photoId,this.commentValue])
                     .then(function(res){
                         //vueにバインドされている値を書き換えると表示に反映される
                         app.result = res.data
-                        $this.getMapFiles()
+                        $this.getMapPhoto()
                     })
                     .catch(function(res){
                         //vueにバインドされている値を書き換えると表示に反映される
@@ -107,10 +107,10 @@
             /*
             var i = 0
             for (i; i< this.post.files.length; i++) {
-                $this.mapFiles.push(Object.values(this.post.files[i]))
+                $this.mapPhotos.push(Object.values(this.post.files[i]))
             }
             */
-            this.getMapFiles();
+            this.getMapPhoto();
         },
         mounted() {
         }

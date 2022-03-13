@@ -15,7 +15,7 @@
                                 <img v-for="file in mapFiles" :key="file" :src="file">
                             </div>
                         </div>
-                        <a :href="'/map/map_detail/' + mapId" hclass="button">詳細</a>  
+                        <a :href="'/map/map_detail/' + areaId" hclass="button">詳細</a>  
                         <button @click="hide">閉じる</button>  
                     </div>
                 </modal>
@@ -33,13 +33,13 @@
                 detailUrl: '/map/map_detail/',
                 mapName: '',
                 mapFiles:[],
-                mapId: '',
+                areaId: '',
             };
         },
         methods: {
             show : function(map) {
                 var file = '/images/test.png'
-                this.mapId = map.map_id
+                this.areaId = map.area_id
                 this.mapName = map.name
                 this.mapFiles = [file,file]
                 console.log(this.mapFiles);

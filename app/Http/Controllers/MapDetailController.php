@@ -4,29 +4,29 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Models\Files;
+use App\Models\TPhoto;
 
 class MapDetailController extends CommonController
 {
-    public function index($map_id) {
+    public function index($area_id) {
         // ログインチェック
         if (!$this->commonAuth->isLogin()) {
             return redirect('login');
         }
         $post = $this->request->input();
-        $modelFiles = new Files;
+        $model_t_photo = new TPhoto;
 
         // マップ情報取得
         $map = config('map');
-        $post['map_info'] = $map['large'][$map_id];
+        $post['map_info'] = $map['large'][$area_id];
         $user_id = 1;
-        $post['files'] =  $this->commonBegin->changePostNameListData($modelFiles->getFiles($user_id, $map_id));
+        $post['photo'] =  $this->commonBegin->changePostNameListData($model_t_photo->getPhoto($user_id, $area_id));
 
         $jsonPost = json_encode($post);
         return view('map.map_detail', compact('post', 'jsonPost'));
     }
 
-    public function regist($map_id) {
+    public function regist($area_id) {
         // ログインチェック
         if (!$this->commonAuth->isLogin()) {
             return redirect('login');
@@ -34,23 +34,23 @@ class MapDetailController extends CommonController
 
         // マップ情報取得
         $post = $this->request->input();
-        $files = $this->request->file('memory_files');
-        $modelFiles = new Files;
+        $photos = $this->request->file('memory_photo');
+        $model_t_photo = new TPhoto;
         $user_id = 1;
-        $directory = '/map_files';
+        $directory = '/map_photo';
 
         DB::beginTransaction();
         try {
-            if ($files != null) {
+            if ($photos != null) {
                 // 添付ファイル登録
-                foreach ($files as $file) {
-                    $file_name_org = $file->getClientOriginalName();
-                    $file_name = $file->hashName();
-                    $extension = $file->extension();
+                foreach ($photos as $photo) {
+                    $photo_name = $photo->getClientOriginalName();
+                    $photo_hash_name = $photo->hashName();
+                    $extension = $photo->extension();
+                    
+                    $model_t_photo->registPhoto($user_id, $area_id, $photo_name, $photo_hash_name, $extension);
     
-                    $modelFiles->registFiles($user_id, $map_id, $file_name_org, $file_name, $extension, $directory);
-    
-                    $file->storeAs('public', $file_name);
+                    $photo->storeAs('public', $photo_hash_name);
                     DB::commit();
                 }
             }
@@ -58,47 +58,47 @@ class MapDetailController extends CommonController
             DB::rollBack();
             dd($e);
         }
-        return redirect('map/map_detail/' . $map_id);
+        return redirect('map/map_detail/' . $area_id);
     }
 
-    protected function getMapFiles($map_id) {
+    protected function getMapPhoto($area_id) {
         $post = $this->request->input();
-        $modelFiles = new Files;
+        $model_t_photo = new TPhoto;
         $user_id = 1;
         
         
         DB::beginTransaction();
         try {
-            $files =  $this->commonBegin->changePostNameListData($modelFiles->getFiles($user_id, $map_id));
+            $photos =  $this->commonBegin->changePostNameListData($model_t_photo->getphoto($user_id, $area_id));
         } catch (Exception $e) {
             dd($e);
         }
         
-        $jsonPost = json_encode($files);
+        $jsonPost = json_encode($photos);
         return $jsonPost;
     }
 
     public function commentRegist(){
         $post = $this->request->input();
-        $modelFiles = new Files;
+        $model_t_photo = new TPhoto;
 
-        $map_id = $post[0];
-        $file_id = $post[1];
-        $fileName = $post[2];
+        $area_id = $post[0];
+        $photo_id = $post[1];
+        $photo_name = $post[2];
         $user_id = 1;
 
         
         DB::beginTransaction();
         try {
-            $modelFiles->updateFileName($file_id, $fileName); 
-            $files =  $this->commonBegin->changePostNameListData($modelFiles->getFiles($user_id, $map_id));
+            $model_t_photo->updatePhotoName($photo_id, $photo_name); 
+            $photos =  $this->commonBegin->changePostNameListData($model_t_photo->getPhoto($user_id, $area_id));
             DB::commit();
         } catch (Exception $e) {
             DB::rollBack();
             dd($e);
         }
         
-        $jsonPost = json_encode($files);
+        $jsonPost = json_encode($photos);
         return $jsonPost;
     }
     

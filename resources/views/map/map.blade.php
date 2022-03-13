@@ -8,7 +8,7 @@
 @section('content')
     <div class="map">
         <map-component :maps='@json($map['large'])'></map-component>
-        <input type="hidden" name="map_id" id="map_id" value="">
+        <input type="hidden" name="area_id" id="area_id" value="">
 
     </div>
 @endsection
